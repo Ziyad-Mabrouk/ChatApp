@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css"/>
+    <title>Chat App</title>
+</head>
+<body>
+
+    <div class="signup-page" id="signup-page">
+        <h2>Sign up</h2>
+        <form id="signupForm">
+            <label for="signup-username">Username:</label>
+            <input type="text" id="signup-username" name="username" required>
+
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" name="fullname" required>
+
+            <label for="signup-password">Password:</label>
+            <input type="password" id="signup-password" name="password" required>
+
+            <button type="submit">Signup</button>
+        </form>
+
+        <h2>Already signed in?</h2>
+        <button id="login">Login</button>
+    </div>
+
+    <div class="login-page hidden" id="login-page">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" required>
+
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <h2>Haven't signed up yet?</h2>
+        <button id="signup">Signup</button>
+    </div>
+
+    <div class="welcome-page hidden" id="welcome-page">
+        <h2 id="display-fullname"></h2>
+        <h3 id="display-username"></h3>
+        <button id="logout">Logout</button>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
