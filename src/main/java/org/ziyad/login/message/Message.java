@@ -1,4 +1,4 @@
-package org.ziyad.login.user;
+package org.ziyad.login.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,19 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
-import java.util.Set;
-
+@Document
 @Getter
 @Setter
-@Document
-@AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class Message {
     @Id
-    private String username;
-    private String fullname;
-    private String password;
-    private Set<String> friends;
-    private Status status;
+    private String messageId;
+    private String canalId;
+    private String sender;
+    private LocalDateTime timestamp;
+    private String content;
 }

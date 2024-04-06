@@ -3,10 +3,7 @@ package org.ziyad.login.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,13 +31,18 @@ public class UserController {
         return ResponseEntity.ok(userService.logoutUser(userCredentials));
     }
 
-    @GetMapping("/user.infos")
-    public ResponseEntity<User> getUserInfos (@RequestBody UserCredentials userCredentials) {
-        return ResponseEntity.ok(userService.getUserInfos(userCredentials));
+    @GetMapping("/user.infos/{username}")
+    public ResponseEntity<User> getUserInfos (@PathVariable("username") String username) {
+        return ResponseEntity.ok(userService.getUserInfos(username));
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users.online")
     public ResponseEntity<List<User>> findConnectedUsers() {
         return ResponseEntity.ok(userService.findConnectedUsers());
+    }
+
+    @GetMapping("/users.all")
+    public ResponseEntity<List<User>> findAllUsers() {
+        return ResponseEntity.ok(userService.findAllUsers());
     }
 }

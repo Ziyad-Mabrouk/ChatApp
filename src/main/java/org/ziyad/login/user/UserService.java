@@ -51,8 +51,8 @@ public class UserService {
         return false;
     }
 
-    public User getUserInfos(UserCredentials userCredentials) {
-        return userRepository.findById(userCredentials.getUsername()).orElse(null);
+    public User getUserInfos(String username) {
+        return userRepository.findById(username).orElse(null);
     }
 
     public List<User> findConnectedUsers() {
