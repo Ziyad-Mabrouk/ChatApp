@@ -223,8 +223,8 @@ function userItemClick(event) {
     const clickedUser = event.currentTarget;
     clickedUser.classList.add('active');
 
-    selectedUserId = clickedUser.getAttribute('id'); //??
-    console.log(selectedUserId);
+    selectedUserId = clickedUser.getAttribute('id');
+    //console.log(selectedUserId);
     fetchAndDisplayUserChat().then();
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
@@ -318,7 +318,11 @@ function displayMessage(senderId, content) {
 }
 
 async function fetchAndDisplayUserChat() {
-    const canalResponse = await fetch(`/canal.find/${username+"_"+selectedUserId}`);
+    const recipients = [username, selectedUserId];
+    recipients.sort(); //canal names always follow alphabetical order
+    const canalName = recipients.join("_");
+    console.log(canalName);
+    const canalResponse = await fetch(`/canal.find/${canalName}`);
     const canal = await canalResponse.json();
     const userChatResponse = await fetch(`/messages/${canal.canalId}`);
     const userChat = await userChatResponse.json();
@@ -337,6 +341,7 @@ function connectWebSocket(username) {
         stompClient.subscribe(`/user/${username}/queue/messages`, onMessageReceived);
     });
 }
+
 
 async function onMessageReceived(payload) {
     await findAndDisplayConnectedUsers();

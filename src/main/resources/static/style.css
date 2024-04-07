@@ -6,16 +6,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     flex-direction: column;
+    overflow: auto;
 }
 
 .chat-container {
     display: flex;
     max-width: 800px;
     min-width: 800px;
-    min-height: 600px;
-    max-height: 600px;
+    min-height: 300px;
+    max-height: 300px;
     margin: 20px;
     border: 1px solid #ccc;
     background-color: #fff;
