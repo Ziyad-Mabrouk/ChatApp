@@ -169,20 +169,24 @@ async function displayUserInfos(username) {
 }
 
 async function findAndDisplayConnectedUsers() {
-    const connectedUsersResponse = await fetch('/users.online');
-    let connectedUsers = await connectedUsersResponse.json();
-    connectedUsers = connectedUsers.filter(user => user.username !== username);
+    const response = await fetch(`/user.infos/${username}`);
+    const currentUser = await response.json();
+    const friends = currentUser.friends || []; // If friends is null, default to an empty array
+    console.log(friends); //!!
     const connectedUsersList = document.getElementById('connectedUsers');
     connectedUsersList.innerHTML = '';
 
-    connectedUsers.forEach(user => {
-        appendUserElement(user, connectedUsersList);
-        if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
+    // Fetch user details for each friend username
+    for (const friendUsername of friends) {
+        const friendResponse = await fetch(`/user.infos/${friendUsername}`);
+        const friend = await friendResponse.json();
+        appendUserElement(friend, connectedUsersList);
+        if (friends.indexOf(friendUsername) < friends.length - 1) {
             const separator = document.createElement('li');
             separator.classList.add('separator');
             connectedUsersList.appendChild(separator);
         }
-    });
+    }
 }
 
 function appendUserElement(user, connectedUsersList) {
@@ -191,7 +195,7 @@ function appendUserElement(user, connectedUsersList) {
     listItem.id = user.username;
 
     const userImage = document.createElement('img');
-    userImage.src = '../img/user_icon.png';
+    userImage.src = 'img/user_icon.png';
     userImage.alt = user.fullname;
 
     const usernameSpan = document.createElement('span');
@@ -219,7 +223,8 @@ function userItemClick(event) {
     const clickedUser = event.currentTarget;
     clickedUser.classList.add('active');
 
-    selectedUserId = clickedUser.getAttribute('id');
+    selectedUserId = clickedUser.getAttribute('id'); //??
+    console.log(selectedUserId);
     fetchAndDisplayUserChat().then();
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
@@ -243,38 +248,54 @@ async function addFriend(event) {
     const newFriend = addFriendInput.value.trim();
     addFriendInput.value = '';
     if (newFriend) {
-        const response = await fetch(`/canal.new`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify([username, newFriend])
-        });
-        if (response.ok) {
-            alert(`Added ${newFriend} as a friend.`);
-            await findAndDisplayConnectedUsers();
+        const userResponse = await fetch(`/user.addfriend/${username}/${newFriend}`,
+            {method: 'POST'});
+
+        const isSuccessful = await userResponse.json();
+
+        if (isSuccessful) {
+            const response = await fetch(`/canal.new`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify([username, newFriend])
+            });
+
+
+            if (response.ok ) {
+                alert(`Successfully added ${newFriend} as a friend.`);
+                await findAndDisplayConnectedUsers();
+            }
         } else {
             console.error(`Failed to add ${newFriend} as a friend.`);
             alert(`Failed to add ${newFriend} as a friend. Please try again.`);
         }
     }
+    await findAndDisplayConnectedUsers();
 }
 
 async function sendMessage(event) {
+    //should be modified later on when chatroom support is put in place
     event.preventDefault();
     const messageContent = messageInput.value.trim();
-    const recipient = selectedUserId;
-    if (messageContent && recipient && stompClient) {
-        const canalResponse = await fetch(`/canal.find/${username+"_"+recipient}`);
+    if (messageContent && selectedUserId && stompClient) {
+        const recipients = [username, selectedUserId];
+        recipients.sort(); //canal names always follow alphabetical order
+        const canalName = recipients.join("_");
+        console.log(canalName);
+        const canalResponse = await fetch(`/canal.find/${canalName}`);
         const canal = await canalResponse.json();
-        const message = {
-            canalId: canal.canalId,
-            sender: username,
-            content: messageContent
-        };
-        stompClient.send("/app/chat", {}, JSON.stringify(message));
-        displayMessage(username, messageInput.value.trim());
-        messageInput.value = '';
+        if (canal) {
+            const message = {
+                canalId: canal.canalId,
+                sender: username,
+                content: messageContent
+            };
+            stompClient.send("/app/chat", {}, JSON.stringify(message));
+            displayMessage(username, messageInput.value.trim());
+            messageInput.value = '';
+        }
     } else {
         alert('Please select a recipient and enter a message.');
     }

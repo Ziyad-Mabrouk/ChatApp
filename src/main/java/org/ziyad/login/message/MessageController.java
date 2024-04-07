@@ -7,6 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.ziyad.login.chatcanal.ChatCanal;
 import org.ziyad.login.chatcanal.ChatCanalService;
 
 import java.util.List;
@@ -24,7 +25,9 @@ public class MessageController {
         Message storedMessage = messageService.sendMessage(message);
 
         // real-time notifications => send notification to every recipient
-        List<String> recipients = canalService.findById(message.getCanalId()).getRecipients().stream().toList();
+        ChatCanal canal = canalService.findById(message.getCanalId());
+        if (canal == null) {return;}
+        List<String> recipients = canal.getRecipients().stream().toList();
         for (String recipient:recipients) {
             if (!recipient.equals(message.getSender())) {
                 template.convertAndSendToUser(

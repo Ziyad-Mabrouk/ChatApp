@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class UserService {
             }
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFriends(new HashSet<>());
         user.setStatus(Status.ONLINE);
         userRepository.save(user);
         return true; //signup successful
@@ -62,4 +65,18 @@ public class UserService {
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
+    public boolean addFriend(String username, String newFriendUsername) {
+        User user = getUserInfos(username);
+        // Check if newFriend's username exists
+        User newFriend = userRepository.findById(newFriendUsername).orElse(null);
+        if (newFriend == null) {
+            return false; // username does not exist
+        }
+        // Add the new friend to the user's friends
+        user.getFriends().add(newFriendUsername);
+        userRepository.save(user);
+        return true; // added successfully
+    }
+
 }

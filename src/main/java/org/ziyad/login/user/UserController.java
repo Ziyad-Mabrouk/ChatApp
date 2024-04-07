@@ -45,4 +45,11 @@ public class UserController {
     public ResponseEntity<List<User>> findAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
+
+    @PostMapping("/user.addfriend/{username}/{newFriendUsername}")
+    public ResponseEntity<Boolean> addFriend(
+            @PathVariable("username") String username,
+            @PathVariable("newFriendUsername") String newFriendUsername) {
+        return ResponseEntity.ok(userService.addFriend(username, newFriendUsername));
+    }
 }

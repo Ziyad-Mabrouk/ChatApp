@@ -34,13 +34,13 @@ public class ChatCanalController {
     }
 
     @GetMapping("/canal.find")
-    public ResponseEntity<List<ChatCanal>> findByCanalNameAndRecipients(@RequestBody ChatCanal chatCanal) {
+    public ResponseEntity<ChatCanal> findByCanalNameAndRecipients(@RequestBody ChatCanal chatCanal) {
         return ResponseEntity.ok(service.findByCanalNameAndRecipients(chatCanal.getCanalName(), chatCanal.getRecipients()));
     }
 
     @GetMapping("/canal.find/{canalName}")
-    public ResponseEntity<List<ChatCanal>> findByCanalName(@PathVariable("canalName") String canalName) {
-        return ResponseEntity.ok(service.findByCanalNameAndRecipients(canalName, new HashSet<>(Arrays.asList(canalName.split("_")))));
+    public ResponseEntity<ChatCanal> findByCanalName(@PathVariable("canalName") String canalName) {
+        return ResponseEntity.ok(service.findByCanalName(canalName));
     }
 
     @GetMapping("/canal.infos/{canalId}")
