@@ -10,12 +10,116 @@ body {
     overflow: auto;
 }
 
+.signup-page, .login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#signupForm, #loginForm {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 300px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 10px 7px 29px 10px;
+}
+
+#loginForm {
+    height: 200px;
+}
+
+.signup-page input, .login-page input {
+    max-width: 300px;
+    height: 44px;
+    background-color: #05060f0a;
+    border-radius: .5rem;
+    padding: 0 1rem;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s,background .2s cubic-bezier(.25,.01,.25,1) 0s;
+    margin-bottom: 10px;
+}
+
+.signup-page label, .login-page label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: .3rem;
+    font-size: .9rem;
+    font-weight: bold;
+    color: #05060f99;
+    transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+.signup-page input:hover, .signup-page input:focus, .login-page input:hover, .login-page input:focus {
+    outline: none;
+    border-color: #05060f;
+}
+
+.signup-page label, .signup-page input:focus, .login-page label, .login-page input:focus {
+    color: #05060fc2;
+}
+
+.signup-page button, .login-page button, .top-bar button {
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.signup-page button, .login-page button {
+    width: 80px
+}
+
+.formButton {
+    align-self: center;
+}
+
+.page-sub {
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+.signup-page button:hover, .login-page button:hover, .top-bar button:hover {
+    background-color: #2c974b;
+}
+
+.signup-page button:active, .login-page button:active, .top-bar button:hover {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+}
+
+.page-title {
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+}
+
 .chat-container {
     display: flex;
     max-width: 800px;
     min-width: 800px;
-    min-height: 300px;
-    max-height: 300px;
+    min-height: 500px;
+    max-height: 500px;
     margin: 20px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -29,7 +133,7 @@ body {
     border-right: 1px solid #ccc;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #3498db;
+    background-color: #2ea44f;
     color: #fff;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -62,7 +166,7 @@ body {
 }
 
 .user-item.active {
-    background-color: #cdebff;
+    background-color: #cdffd4;
     color: #4f4f4f;
     padding: 10px;
     border-radius: 5px;
@@ -97,7 +201,7 @@ body {
 
 .message {
     margin-bottom: 5px;
-    border-radius: 5px;
+    border-radius: 1.125rem 1.125rem 1.125rem 0;
 }
 
 #chat-messages {
@@ -114,7 +218,7 @@ body {
 
 .user-item span.nbr-msg {
     margin-left: 10px;
-    background-color: #f8fa6f;
+    background-color: #fa946f;
     color: white;
     padding: 5px;
     width: 10px;
@@ -123,9 +227,10 @@ body {
 }
 
 .sender {
-    background-color: #3498db;
+    background-color: #2ea44f;
     color: #fff;
     align-self: flex-end;
+    border-radius: 1.125rem 1.125rem 0 1.125rem;
 }
 
 .receiver {
@@ -150,48 +255,10 @@ body {
 .message-input button {
     padding: 10px;
     border: none;
-    background-color: #3498db;
+    background-color: #2ea44f;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.user-form {
-    max-width: 400px;
-    padding: 40px;
-    box-sizing: border-box;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.user-form h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.user-form label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.user-form input {
-    width: 100%;
-    padding: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.user-form button {
-    padding: 12px;
-    border: none;
-    background-color: #3498db;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
 }
 
 .hidden {
@@ -201,4 +268,28 @@ body {
 a.logout {
     color: #fff;
     text-decoration: none;
+}
+
+.top-bar {
+    width: 775px;
+    margin: 20px;
+    padding: 15px;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#friendForm {
+    display: flex;
+    flex-direction: row;
+}
+
+.sub3 {
+    font-size: 15px;
+    font-weight: lighter;
+}
+
+.top-bar button {
+    margin-left: 20px;
 }

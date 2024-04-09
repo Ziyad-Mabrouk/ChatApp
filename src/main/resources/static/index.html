@@ -8,7 +8,7 @@
 <body>
 
     <div class="signup-page" id="signup-page">
-        <h2>Sign up</h2>
+        <h2 class="page-title">Sign up</h2>
         <form id="signupForm">
             <label for="signup-username">Username:</label>
             <input type="text" id="signup-username" name="username" required>
@@ -19,15 +19,15 @@
             <label for="signup-password">Password:</label>
             <input type="password" id="signup-password" name="password" required>
 
-            <button type="submit">Signup</button>
+            <button type="submit" class="formButton">Signup</button>
         </form>
 
-        <h2>Already signed in?</h2>
+        <h2 class="page-sub">Already signed in?</h2>
         <button id="login">Login</button>
     </div>
 
     <div class="login-page hidden" id="login-page">
-        <h2>Login</h2>
+        <h2 class="page-title">Login</h2>
         <form id="loginForm">
             <label for="login-username">Username:</label>
             <input type="text" id="login-username" name="username" required>
@@ -35,15 +35,23 @@
             <label for="login-password">Password:</label>
             <input type="password" id="login-password" name="password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit" class="formButton">Login</button>
         </form>
 
-        <h2>Haven't signed up yet?</h2>
+        <h2 class="page-sub">Haven't signed up yet?</h2>
         <button id="signup">Signup</button>
     </div>
 
     <div class="welcome-page hidden" id="welcome-page">
-        <h2 id="display-fullname"></h2>
+        <div class="top-bar">
+            <h2 id="display-fullname"></h2>
+            <h3 class="sub3">Type in the username of a friend to add them</h3>
+            <form id="friendForm">
+                <input type="text" id="add-username" name="username" required>
+
+                <button type="submit">Add Chatting Friend</button>
+            </form>
+        </div>
         <div class="chat-container" id="chat-page">
             <div class="users-list">
                 <div class="users-list-container">
@@ -70,13 +78,6 @@
                 </form>
             </div>
         </div>
-        <form id="friendForm">
-            <h3>Type in the username of a friend to add them</h3>
-            <label for="add-username">Username:</label>
-            <input type="text" id="add-username" name="username" required>
-
-            <button type="submit">Add Chatting Friend</button>
-        </form>
     </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
