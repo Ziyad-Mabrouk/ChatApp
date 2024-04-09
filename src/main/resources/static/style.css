@@ -199,9 +199,14 @@ body {
     border-bottom-right-radius: 8px;
 }
 
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .message {
-    margin-bottom: 5px;
     border-radius: 1.125rem 1.125rem 1.125rem 0;
+    width: min-content;
 }
 
 #chat-messages {
@@ -216,6 +221,15 @@ body {
     word-wrap: break-word;
 }
 
+.message-container span {
+    font-size: 6px;
+    margin-bottom: 5px;
+}
+
+.from-sender span {
+    text-align: end;
+}
+
 .user-item span.nbr-msg {
     margin-left: 10px;
     background-color: #fa946f;
@@ -226,17 +240,24 @@ body {
     height: 10px;
 }
 
+.from-sender {
+    align-self: flex-end;
+}
+
 .sender {
     background-color: #2ea44f;
     color: #fff;
-    align-self: flex-end;
     border-radius: 1.125rem 1.125rem 0 1.125rem;
+    align-self: end;
+}
+
+.from-receiver {
+    align-self: flex-start;
 }
 
 .receiver {
     background-color: #ecf0f1;
     color: #333;
-    align-self: flex-start;
 }
 
 .message-input {

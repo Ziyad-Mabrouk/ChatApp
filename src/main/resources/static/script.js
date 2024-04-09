@@ -293,7 +293,7 @@ async function sendMessage(event) {
                 content: messageContent
             };
             stompClient.send("/app/chat", {}, JSON.stringify(message));
-            displayMessage(username, messageInput.value.trim());
+            displayMessage(username, messageInput.value.trim(), new Date());
             messageInput.value = '';
         }
     } else {
@@ -303,18 +303,79 @@ async function sendMessage(event) {
     event.preventDefault();
 }
 
-function displayMessage(senderId, content) {
+function displayMessage(senderId, content, timestamp) {
     const messageContainer = document.createElement('div');
-    messageContainer.classList.add('message');
+    messageContainer.classList.add('message-container');
+
+    const message = document.createElement('div');
+    message.classList.add('message');
+
     if (senderId === username) {
-        messageContainer.classList.add('sender');
+        message.classList.add('sender');
+        messageContainer.classList.add('from-sender');
     } else {
-        messageContainer.classList.add('receiver');
+        message.classList.add('receiver');
+        messageContainer.classList.add('from-receiver');
     }
-    const message = document.createElement('p');
-    message.textContent = content;
+    const message_content = document.createElement('p');
+    message_content.textContent = content;
+
+    const formattedTimestamp = formatDate(timestamp);
+    const date = document.createElement('span');
+    date.textContent = formattedTimestamp;
+
+    message.appendChild(message_content);
     messageContainer.appendChild(message);
+    messageContainer.appendChild(date);
     chatArea.appendChild(messageContainer);
+}
+
+const intervals = {
+    year: 31536000,
+    month: 2592000,
+    week: 604800,
+    day: 86400,
+    hour: 3600,
+    minute: 60
+};
+
+const formats = {
+    prefix: "",
+    suffix: " ago",
+    now: "just now",
+    future: "in the future",
+    seconds: "less than a minute"
+};
+
+function getRelativeTime(diffInSeconds) {
+    for (let [unit, secondsInUnit] of Object.entries(intervals)) {
+        const interval = Math.floor(diffInSeconds / secondsInUnit);
+        if (interval > 1) {
+            return `${interval} ${unit}${interval > 1 ? 's' : ''} ${formats.suffix}`;
+        }
+    }
+    return formats.now;
+}
+
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now - date;
+    const seconds = Math.floor(diff / 1000);
+
+    let formattedDate;
+    if (diff < 0) {
+        formattedDate = 'Invalid Date';
+    } else if (diff < 0) {
+        formattedDate = formats.future;
+    } else if (seconds < 5) {
+        formattedDate = formats.now;
+    } else {
+        formattedDate = getRelativeTime(seconds);
+    }
+
+    return formattedDate;
 }
 
 async function fetchAndDisplayUserChat() {
@@ -328,10 +389,13 @@ async function fetchAndDisplayUserChat() {
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
-        displayMessage(chat.sender, chat.content);
+        displayMessage(chat.sender, chat.content, chat.timestamp);
     });
     chatArea.scrollTop = chatArea.scrollHeight;
 }
+
+// Call the function to update timestamps every minute
+setInterval(fetchAndDisplayUserChat, 60000);
 
 function connectWebSocket(username) {
     const socket = new SockJS('/ws');
@@ -348,7 +412,7 @@ async function onMessageReceived(payload) {
     console.log('Message received', payload);
     const message = JSON.parse(payload.body);
     if (selectedUserId && selectedUserId === message.sender) {
-        displayMessage(message.sender, message.content);
+        displayMessage(message.sender, message.content, message.timestamp);
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
