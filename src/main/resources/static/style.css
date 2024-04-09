@@ -293,3 +293,7 @@ a.logout {
 .top-bar button {
     margin-left: 20px;
 }
+
+#messageForm {
+    padding: 5px;
+}
